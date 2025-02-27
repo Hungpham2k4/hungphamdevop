@@ -1,0 +1,25 @@
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: [self-hosted]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Build mvn
+        run: |
+          echo "This is a build step"
+      - name: Build and tag Docker image
+        run: |
+          echo "This is a docker build step"
+  deploy:
+    runs-on: [self-hosted]
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Stop and Remove Existing Containers
+        run: echo "This s a remove old application step"
+      - name: Run with Docker Compose
+        run: echo "This is a run new app step"
